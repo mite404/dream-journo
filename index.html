@@ -1,12 +1,12 @@
 <!doctype html>
-<html class="no-js" lang="">
+<html lang="en">
 
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title></title>
-  <link rel="stylesheet" href="css/style.css">
-  <meta name="description" content="">
+  <title>Dream Journal</title>
+  <link rel="stylesheet" href="src/css/style.css">
+  <meta name="Ethan's Dream Journal for NYPL TechConnect Front End Web Dev Phase 2" content="">
 
   <meta property="og:title" content="">
   <meta property="og:type" content="">
@@ -23,11 +23,67 @@
 </head>
 
 <body>
-
-  <!-- Add your site or application content here -->
-  <p>Hello world! This is HTML5 Boilerplate.</p>
-  <script src="js/app.js"></script>
+  <div class="dream-container">
+    <header>
+      <h1>
+        <span class="icon">🌙</span>
+        Dream Journal
+      </h1>
+      <button id="themeToggle" class="theme-toggle" title="Toggle dark mode">
+        🌙
+      </button>
+    </header>
+    
+    <section>
+      <div class="dream-entry">
+        <div class="form-dream-title">
+          <label for="dreamTitle">Dream Title (optional)</label>
+          <input type="text" id="dreamTitle" placeholder="Enter a title for your dream">
+        </div>
+        
+        <label>Dream Mood</label>
+        <div class="mood-selector">
+          <button class="mood-option" id="mood-happy" data-mood="happy" title="Happy">😊</button>
+          <button class="mood-option" id="mood-scared" data-mood="scared" title="Scared">😨
+          </button>
+          <button class="mood-option" id="mood-confused" data-mood="confused" title="Confused">
+            😕</button>
+          <button class="mood-option" id="mood-peaceful" data-mood="peaceful" title="Peaceful">
+            😌</button>
+          <button class="mood-option" id="mood-neutral selected" data-mood="neutral"
+                  title="Neutral">😐</button>
+        </div>
+        
+        <div class="form-dream-content">
+          <label for="dreamContent">Dream Description</label>
+          <textarea id="dreamContent" placeholder="Describe your dream in detail... What did you see? How did you feel?"></textarea>
+        </div>
+        
+        <div class="form-footer">
+          <div id="wordCount" class="word-count">0 words</div>
+          <button id="saveBtn" class="save-btn" disabled>
+            <span>💾</span> Save Dream
+          </button>
+        </div>
+      </div>
+    </section>
+    
+  </div>
+  
+    <div id="savedMessage" class="saved-message">
+      Dream saved successfully!
+    </div>
+  
+    
+    <div id="dreamList" class="dream-list" style="display: none;">
+      <h2>
+        <span>📋</span>
+        Recent Dreams (<span id="dreamCount">0</span>)
+      </h2>
+      <div id="dreamItems"></div>
+    </div>
+  
+<script src="src/main.js"></script>
 
 </body>
-
 </html>

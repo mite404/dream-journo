@@ -14,6 +14,9 @@ importers:
       html-webpack-plugin:
         specifier: ^5.6.0
         version: 5.6.3(webpack@5.99.8)
+      prettier:
+        specifier: ^3.5.3
+        version: 3.5.3
       webpack:
         specifier: ^5.91.0
         version: 5.99.8(webpack-cli@5.1.4)
@@ -1002,6 +1005,11 @@ packages:
   pkg-dir@4.2.0:
     resolution: {integrity: sha512-HRDzbaKjC+AOWVXxAU/x54COGeIv9eb+6CkDSQoNTt4XyWoIJvuPsXizxu/Fr23EiekbtZwmh1IcIG/l/a10GQ==}
     engines: {node: '>=8'}
+
+  prettier@3.5.3:
+    resolution: {integrity: sha512-QQtaxnoDJeAkDvDKWCLiwIXkTgRhwYDEQCghU9Z6q03iyek/rxRh/2lC3HB7P8sWT2xC/y5JDctPLBIGzHKbhw==}
+    engines: {node: '>=14'}
+    hasBin: true
 
   pretty-error@4.0.0:
     resolution: {integrity: sha512-AoJ5YMAcXKYxKhuJGdcvse+Voc6v1RgnsR3nWcYU7q4t6z0Q6T86sv5Zq8VIRbOWWFpvdGE83LtdSMNd+6Y0xw==}
@@ -2371,6 +2379,8 @@ snapshots:
   pkg-dir@4.2.0:
     dependencies:
       find-up: 4.1.0
+
+  prettier@3.5.3: {}
 
   pretty-error@4.0.0:
     dependencies:
