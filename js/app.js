@@ -34,14 +34,44 @@ const saveDreamBtn = document.getElementById("saveDreamBtn");
 // State
 let selectedMood = "neutral";
 const dreamsArray = [];
+
 document.addEventListener("DOMContentLoaded", () => {
-  // Load dreams from localStorage into current browsing session via dreamsArray
-  loadDreams().forEach((dream) => dreamsArray.push(dream));
-  // Render the dreams
-  renderDreams(dreamItems);
-  // Init saveDreamBtn state based on input fields
+  const { theme, dreams } = loadPreferences();
+  applyTheme(theme);
+  loadDreams().forEach((dream) => dreamsArray.unshift(dream));
+  renderDreams(dreams);
   toggleSaveButton();
+  initializeApplication();
 });
+
+function initializeApplication() {
+  const preferences = loadPreferences();
+
+  if (preferences !== undefined) {
+    console.log("Theme: ", preferences.theme);
+    console.log("Dreams: ", preferences.dreams);
+  } else {
+    console.log("No preferences found.");
+  }
+  console.log("Application initialized");
+}
+
+function loadPreferences() {
+  // Get theme or load `light` if no preference found
+  const theme = localStorage.getItem("theme") || "light";
+  // Load dreams from localStorage into current browsing session via dreamsArray
+  const dreams = loadDreams();
+
+  return { theme, dreams };
+}
+
+document.getElementById("themeToggle").addEventListener("click", applyTheme);
+
+function applyTheme(theme) {
+  if (theme !== "light") {
+    document.body.classList.toggle("dark-mode");
+  }
+}
 
 moodOptions.forEach((option) => {
   option.addEventListener("click", () => {
@@ -58,19 +88,19 @@ moodOptions.forEach((option) => {
 function handleMoodChange(mood) {
   switch (mood) {
     case "happy":
-      mood.classList.add("😊");
+      mood.classList.add("happy");
       break;
     case "scared":
-      mood.classList.add("😱");
+      mood.classList.add("scared");
       break;
     case "sad":
-      mood.classList.add("😭");
+      mood.classList.add("sad");
       break;
     case "content":
-      mood.classList.add("😌");
+      mood.classList.add("content");
       break;
     case "neutral":
-      mood.classList.add("😐");
+      mood.classList.add("neutral");
       break;
   }
 }
@@ -81,20 +111,21 @@ function saveUserDreams(dreams) {
 }
 
 function addDream(dream) {
-  dreamsArray.push(dream);
+  dreamsArray.unshift(dream);
   saveUserDreams(dreamsArray);
   console.log("Dream added, current dreams:", dreamsArray);
 }
 
 function loadDreams() {
+  // Load any dreams from
   const savedDreams = localStorage.getItem("user-dreams");
   return savedDreams ? JSON.parse(savedDreams) : [];
 }
 
-function renderDreams(dreamItems) {
-  if (!dreamItems) return;
+function renderDreams(dreams) {
+  if (!dreams) return;
 
-  console.log("dreamItems element:", dreamItems);
+  console.log("dreams element:", dreams);
   const currentDreams = loadDreams();
 
   // Update dream count
@@ -118,7 +149,7 @@ function renderDreams(dreamItems) {
     </div>
   `;
   });
-  dreamItems.innerHTML = html;
+  dreams.innerHTML = html;
 }
 
 // Add event listeners and validation to `Save Dream` button
@@ -133,6 +164,19 @@ function toggleSaveButton() {
   saveDreamBtn.disabled = !(
     dreamTitle.value.trim() !== "" && dreamContent.value.trim() !== ""
   );
+}
+
+dreamContent.addEventListener("input", updateWordCount);
+
+function getWordCount(text) {
+  return text.split(" ").length;
+}
+
+function updateWordCount() {
+  // Get text from <textarea>
+  const text = dreamContent.value;
+  const count = getWordCount(text);
+  wordCount.textContent = `${count} words`;
 }
 
 saveDreamBtn.addEventListener("click", () => {

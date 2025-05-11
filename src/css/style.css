@@ -1,11 +1,11 @@
 :root {
   --primary: #6366f1;
   --primary-dark: #4f46e5;
-  --bg-light: #f9fafb;
+  --bg-light: #efefef;
   --bg-dark: #1f2937;
-  --bg-card: #ffffff;
+  --bg-card: #f3f3f3;
   --bg-card-dark: #374151;
-  --bg-input: #f3f4f6;
+  --bg-input: #e3e2e2;
   --bg-input-dark: #4b5563;
   --text-dark: #1f2937;
   --text-light: #f9fafb;
@@ -76,7 +76,7 @@ h1 .icon {
 }
 
 .theme-toggle:hover {
-  opacity: 0.9;
+  opacity: 0.4;
 }
 
 .dream-entry {
@@ -149,6 +149,11 @@ textarea {
   font-size: 1.5rem;
   cursor: pointer;
   padding: 0.5rem;
+  width: 50px;  /* Add fixed width */
+  height: 50px; /* Add equal height for perfect circle */
+  display: flex; /* Add to center the emoji/content */
+  align-items: center;
+  justify-content: center;
   border-radius: 50%;
   transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
   background-color: var(--bg-input);
@@ -170,6 +175,7 @@ textarea {
 
 .form-footer {
   display: flex;
+  padding: 10px;
   justify-content: space-between;
   align-items: center;
 }
