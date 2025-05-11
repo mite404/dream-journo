@@ -46,8 +46,8 @@
           <button class="mood-option" id="mood-happy" data-mood="happy" title="Happy">😊</button>
           <button class="mood-option" id="mood-scared" data-mood="scared" title="Scared">😨
           </button>
-          <button class="mood-option" id="mood-confused" data-mood="confused" title="Confused">
-            😕</button>
+          <button class="mood-option" id="mood-sad" data-mood="confused" title="sad">
+            😭</button>
           <button class="mood-option" id="mood-peaceful" data-mood="peaceful" title="Peaceful">
             😌</button>
           <button class="mood-option" id="mood-neutral selected" data-mood="neutral"
@@ -61,27 +61,27 @@
         
         <div class="form-footer">
           <div id="wordCount" class="word-count">0 words</div>
-          <button id="saveBtn" class="save-btn" disabled>
+          <button id="saveDreamBtn" class="save-btn" disabled>
             <span>💾</span> Save Dream
           </button>
         </div>
       </div>
     </section>
-    
-  </div>
-  
     <div id="savedMessage" class="saved-message">
       Dream saved successfully!
     </div>
-  
     
-    <div id="dreamList" class="dream-list" style="display: none;">
+    
+    <div id="dreamList" class="dream-list hidden">
       <h2>
         <span>📋</span>
         Recent Dreams (<span id="dreamCount">0</span>)
       </h2>
       <div id="dreamItems"></div>
     </div>
+  </div>
+  
+  
   
 <script src="src/main.js"></script>
 

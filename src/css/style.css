@@ -218,6 +218,10 @@ textarea {
   color: #d1fae5;
 }
 
+.hidden {
+  display: none;
+}
+
 .dream-list {
   background-color: var(--bg-card);
   border-radius: 0.75rem;

@@ -20,8 +20,7 @@
 // TODO 12: Add a helper function to prevent XSS attacks by escaping HTML in user input
 
 // Dom elements
-const dreamEntry = document.getElementById("dream-entry");
-const dreamsArray = [];
+// const dreamEntry = document.getElementById("dream-entry");
 const themeToggle = document.getElementById("themeToggle");
 const dreamTitle = document.getElementById("dreamTitle");
 const dreamContent = document.getElementById("dreamContent");
@@ -30,9 +29,19 @@ const wordCount = document.getElementById("wordCount");
 const dreamList = document.getElementById("dreamList");
 const dreamItems = document.getElementById("dreamItems");
 const dreamCount = document.getElementById("dreamCount");
+const saveDreamBtn = document.getElementById("saveDreamBtn");
 
 // State
 let selectedMood = "neutral";
+const dreamsArray = [];
+document.addEventListener("DOMContentLoaded", () => {
+  // Load dreams from localStorage into current browsing session via dreamsArray
+  loadDreams().forEach((dream) => dreamsArray.push(dream));
+  // Render the dreams
+  renderDreams(dreamItems);
+  // Init saveDreamBtn state based on input fields
+  toggleSaveButton();
+});
 
 moodOptions.forEach((option) => {
   option.addEventListener("click", () => {
@@ -49,21 +58,98 @@ moodOptions.forEach((option) => {
 function handleMoodChange(mood) {
   switch (mood) {
     case "happy":
-      mood.classList.add("happy");
+      mood.classList.add("😊");
       break;
     case "scared":
-      mood.classList.add("scared");
+      mood.classList.add("😱");
       break;
     case "sad":
-      mood.classList.add("sad");
+      mood.classList.add("😭");
       break;
     case "content":
-      mood.classList.add("content");
+      mood.classList.add("😌");
       break;
     case "neutral":
-      mood.classList.add("neutral");
+      mood.classList.add("😐");
       break;
   }
+}
+
+function saveUserDreams(dreams) {
+  localStorage.setItem("user-dreams", JSON.stringify(dreams));
+  console.log("Saved dream to local storage:", dreams);
+}
+
+function addDream(dream) {
+  dreamsArray.push(dream);
+  saveUserDreams(dreamsArray);
+  console.log("Dream added, current dreams:", dreamsArray);
+}
+
+function loadDreams() {
+  const savedDreams = localStorage.getItem("user-dreams");
+  return savedDreams ? JSON.parse(savedDreams) : [];
+}
+
+function renderDreams(dreamItems) {
+  if (!dreamItems) return;
+
+  console.log("dreamItems element:", dreamItems);
+  const currentDreams = loadDreams();
+
+  // Update dream count
+  if (dreamCount) {
+    dreamCount.textContent = `${currentDreams.length}`;
+  }
+
+  // Show dream list if we have any dreams
+  if (currentDreams.length > 0) {
+    dreamList.classList.remove("hidden");
+    dreamList.style.display = "block";
+  }
+
+  let html = "";
+  currentDreams.forEach((dream) => {
+    html += `
+    <div class="dream-item">
+      <h3>${escapeHtml(dream.title)}</h3>
+      <p>Mood: ${escapeHtml(dream.mood)}</p>
+      <p>Content: ${escapeHtml(dream.content)}</p>
+    </div>
+  `;
+  });
+  dreamItems.innerHTML = html;
+}
+
+// Add event listeners and validation to `Save Dream` button
+document
+  .getElementById("dreamTitle")
+  .addEventListener("input", toggleSaveButton);
+document
+  .getElementById("dreamContent")
+  .addEventListener("input", toggleSaveButton);
+
+function toggleSaveButton() {
+  saveDreamBtn.disabled = !(
+    dreamTitle.value.trim() !== "" && dreamContent.value.trim() !== ""
+  );
+}
+
+saveDreamBtn.addEventListener("click", () => {
+  const dream = {
+    title: dreamTitle.value,
+    content: dreamContent.value,
+    mood: selectedMood,
+  };
+
+  addDream(dream);
+  renderDreams(dreamItems);
+  console.log("Dream Added! 🌈🧠🎉");
+  showRecentDreams();
+});
+
+function showRecentDreams() {
+  dreamList.classList.toggle("hidden");
 }
 
 // Helper function to prevent XSS
