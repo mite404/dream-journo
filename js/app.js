@@ -96,22 +96,25 @@ moodOptions.forEach((option) => {
   });
 });
 
-function handleMoodChange(mood) {
-  switch (mood) {
-    case "happy":
-      mood.classList.add("happy");
+function handleMoodChange(moodElement) {
+  const moodEmoji = moodElement.dataset.mood;
+  let moodClass;
+
+  switch (moodEmoji) {
+    case "😊":
+      moodClass = "happy";
       break;
-    case "scared":
-      mood.classList.add("scared");
+    case "😨":
+      moodClass = "scared";
       break;
-    case "sad":
-      mood.classList.add("sad");
+    case "😭":
+      moodClass = "sad";
       break;
-    case "content":
-      mood.classList.add("content");
+    case "😌":
+      moodClass = "peaceful";
       break;
-    case "neutral":
-      mood.classList.add("neutral");
+    case "😐":
+      moodClass = "neutral";
       break;
   }
 }
