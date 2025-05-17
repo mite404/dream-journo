@@ -1,14 +1,7 @@
 // TODO 8: Write a function to save dreams that:
-//    - Creates a new dream object with all form data
-//    - Adds it to your dreams array
-//    - Saves the updated array to localStorage
 //    - Resets the form
-// TODO 9: Implement a function to display the saved dreams that:
-//    - Checks if there are any dreams to display
-//    - Updates the dream count
-//    - Creates HTML for each dream in the list
-//    - Adds proper security by escaping HTML in user content
 // TODO 10: Add a function to show a "saved successfully" message that disappears after a few seconds
+import { v4 as uuidv4 } from "uuid";
 
 // Dom elements
 const themeToggle = document.getElementById("themeToggle");
@@ -131,33 +124,6 @@ function loadDreams() {
   return savedDreams ? JSON.parse(savedDreams) : [];
 }
 
-function renderDreamsList(dreams) {
-  // Check if the array is empty (but still valid)
-  if (!dreams || dreams.length === 0) {
-    dreamItems.innerHTML = `<p class="no-dreams">No dreams recorded yet!</p>`;
-    return;
-  }
-
-  // Show dreams list if we have any dreams
-  dreamsList.classList.remove("hidden");
-  dreamsList.style.display = "block";
-
-  let html = "";
-  dreams.forEach((dream) => {
-    html += `
-      <div class="dream-item">
-        <h3>${escapeHtml(dream.title)}</h3>
-        <p>Mood: ${escapeHtml(dream.mood)}</p>
-        <p>Content: ${escapeHtml(dream.content)}</p>
-      </div>
-    `;
-  });
-  dreamItems.innerHTML = html;
-
-  // Update dream count
-  updateDreamCount(dreams.length);
-}
-
 // Add event listeners and validation to `Save Dream` button
 document
   .getElementById("dreamTitle")
@@ -170,6 +136,41 @@ function toggleSaveButton() {
   saveDreamBtn.disabled = !(
     dreamTitle.value.trim() !== "" && dreamContent.value.trim() !== ""
   );
+}
+
+function renderDreamsList(dreams) {
+  // Check if the array is empty (but still valid)
+  if (!dreams || dreams.length === 0) {
+    dreamItems.innerHTML = `<p class="no-dreams">No dreams recorded yet!</p>`;
+    return;
+  }
+
+  // Show dreams list if we have any dreams
+  dreamsList.classList.remove("hidden");
+  dreamsList.style.display = "block";
+
+  let html = "";
+  dreams.forEach((dream, index) => {
+    html += `
+      <div class="dream-item">
+        <div class="dream-item-header" id="dreamItemHeader">
+          <h3>${escapeHtml(dream.title)}</h3>
+          <button type="button" class="del-button" id="deleteDreamBtn" data-index="${index}">
+            <span>❌</span>
+          </button>
+        </div>
+        <p>Mood: ${escapeHtml(dream.mood)}</p>
+        <p>Content: ${escapeHtml(dream.content)}</p>
+      </div>
+    `;
+  });
+  dreamItems.innerHTML = html;
+
+  // Update dream count
+  updateDreamCount(dreams.length);
+
+  // Add event listeners to delete buttons
+  addDeleteEventListeners();
 }
 
 dreamContent.addEventListener("input", updateWordCount);
@@ -214,6 +215,7 @@ saveDreamBtn.addEventListener("click", () => {
     title: dreamTitle.value,
     content: dreamContent.value,
     mood: selectedMood,
+    uuid: uuidv4(),
   };
   if (validateDream(dream)) {
     handleSaveDream(dream);
@@ -224,6 +226,29 @@ saveDreamBtn.addEventListener("click", () => {
   }
 });
 
+// Add eventListeners to all delete buttons
+function addDeleteEventListeners() {
+  const deleteButtons = document.querySelectorAll("#deleteDreamBtn");
+  deleteButtons.forEach((button) => {
+    button.addEventListener("click", handleDeleteDream);
+  });
+}
+
+function handleDeleteDream(event) {
+  const index = parseInt(event.currentTarget.getAttribute("data-index"));
+
+  // Remove dream from array
+  dreamsArray.splice(index, 1);
+
+  // Update localStorage
+  localStorage.setItem("user-dreams", JSON.stringify(dreamsArray));
+
+  // Re-render dreams list
+  renderDreamsList(dreamsArray);
+  updateUI();
+  console.log("Dream deleted successfully");
+}
+
 // Saves dream to local storage
 function handleSaveDream() {
   // event.preventDefault();
@@ -232,6 +257,7 @@ function handleSaveDream() {
     title: dreamTitle.value,
     content: dreamContent.value,
     mood: selectedMood,
+    uuid: uuidv4(),
   };
 
   try {

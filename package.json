@@ -1,5 +1,5 @@
 {
-  "name": " ",
+  "name": "dream-journal",
   "version": "0.0.1",
   "description": "",
   "private": true,
@@ -21,6 +21,7 @@
     "webpack-dev-server": "^5.0.4",
     "webpack-merge": "^5.10.0",
     "prettier": "^3.5.3",
-    "eslint": "^9.26.0"
+    "eslint": "^9.26.0",
+    "uuid": "^11.1.0"
   }
 }
