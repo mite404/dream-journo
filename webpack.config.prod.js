@@ -8,6 +8,13 @@ module.exports = merge(common, {
   plugins: [
     new HtmlWebpackPlugin({
       template: "./index.html",
+      inject: 'head',  // Inject scripts in head instead of body to avoid duplication
+      scriptLoading: 'defer',  // Use defer attribute
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeAttributeQuotes: false  // Keep attribute quotes for safety
+      }
     }),
     new CopyPlugin({
       patterns: [
